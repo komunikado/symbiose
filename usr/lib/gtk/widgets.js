@@ -3397,6 +3397,116 @@ $.webos.alertContainer.prototype = {
 $.webos.widget('alertContainer', 'container');
 
 /**
+ * A color picker.
+ * @param  {string} defaultColor The default color.
+ * @constructor
+ * @augments $.webos.container
+ */
+$.webos.colorPicker = function(defaultColor) {
+	return $('<div></div>').colorPicker({
+		color: defaultColor
+	});
+};
+/**
+ * A color picker.
+ * @type {Object}
+ */
+$.webos.colorPicker.prototype = {
+	_name: 'color-picker',
+	_paletteColors: {
+		red: ['#E78E89', '#DA4D45', '#AD2A23'],
+		orange: ['#F7A575', '#F37329', '#C14E0B'],
+		yellow: ['#FDE8AB', '#FBD25D', '#F9BC0F'],
+		green: ['#CCDF7B', '#B3CF3B', '#809525'],
+		blue: ['#8ECAF2', '#47A8E9', '#1881C8'],
+		pink: ['#D997D8', '#C35CC2', '#983897'],
+		black: ['#000', '#333', '#666', '#999', '#CCC', '#FFF']
+	},
+	options: {
+		mode: 'palette',
+		value: '#000' //Black
+	},
+	_create: function () {
+		var that = this;
+
+		this._super('_create');
+
+		// Palette
+		var $palette = $('<div></div>', { 'class': 'picker-palette' }).appendTo(this.element);
+
+		for (var paletteVaration in this._paletteColors) {
+			var variationColors = this._paletteColors[paletteVaration];
+
+			var variation = '<ul class="palette-variation palette-variation-'+paletteVaration+'">';
+			for (var i = 0; i < variationColors.length; i++) {
+				var color = variationColors[i];
+
+				variation += '<li style="background-color: '+color+';" data-color="'+color+'"></li>';
+			}
+			variation += '</ul>';
+
+			$palette.append(variation);
+		}
+
+		$palette.on('click', 'li', function () {
+			var newColor = $(this).data('color');
+
+			that.option('value', newColor);
+
+			$(this).addClass('color-picked');
+
+			that._trigger('change', { type: 'change' }, { color: newColor });
+		});
+
+		// Custom
+		var $custom = $('<div></div>', { 'class': 'picker-custom' }).hide().appendTo(this.element);
+		var $colorInput = $('<input />', { type: 'color', value: this.options.value }).change(function (e) {
+			e.stopPropagation();
+
+			var newColor = $(this).val();
+
+			that.option('value', newColor);
+			that._trigger('change', { type: 'change' }, { color: newColor });
+		}).appendTo($custom);
+	},
+	_update: function(key, value) {
+		var that = this;
+
+		switch (key) {
+			case 'value':
+				value = String(value);
+
+				this.options.value = value;
+				this.element.find('input[type="color"]').val(value);
+				this.element.find('li.color-picked').removeClass('color-picked');
+				break;
+			case 'mode':
+				var $modeCtn = this.element.children('.picker-'+value);
+
+				if (!$modeCtn.length) {
+					return false;
+				}
+
+				this.element.children().hide();
+				$modeCtn.show();
+
+				if (value == 'custom') {
+					$modeCtn.find('input[type="color"]').click();
+				}
+		}
+	},
+	supportsColorInput: function () {
+		var i = document.createElement("input");
+		i.setAttribute("type", "color");
+		return (i.type !== "text");
+	},
+	toggleMode: function () {
+		this.option('mode', (this.options.mode == 'palette') ? 'custom' : 'palette');
+	}
+};
+$.webos.widget('colorPicker', 'container');
+
+/**
  * A draggable element.
  * Use the widget `ui_draggable` for jQuery UI's draggable widget.
  * @constructor

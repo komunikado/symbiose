@@ -314,6 +314,105 @@ module.exports = function(grunt) {
 		grunt.file.write('build/usr/share/icons/index.json', JSON.stringify(items));
 	});
 
+	grunt.registerTask('gen-i18n', 'Generate i18n files.', function() {
+		var localesRoot = 'usr/share/locale',
+			localesDest = 'build/'+localesRoot;
+
+		var parseIni = function (contents) {
+			var lines = contents
+				.replace(/\/\*([\s\S]*?)\*\//g, '') //Delete comments
+				.split('\n');
+
+			var data = {};
+
+			for (var i = 0; i < lines.length; i++) {
+				var line = lines[i].trim();
+
+				if (line[0] == '#') {
+					continue;
+				}
+
+				var entity = line.split('=');
+
+				if (entity.length < 2) {
+					continue;
+				}
+
+				data[entity.shift().trim()] = entity.join('=').trim();
+			}
+
+			return data;
+		};
+
+		var formatIni = function (data) {
+			var output = '';
+
+			for (var key in data) {
+				var val = data[key];
+
+				output += key+'='+val+'\n';
+			}
+
+			return output;
+		};
+
+		//First, generate english reference files
+		var localePath = localesRoot+'/fr_FR',
+			outputDir = localesRoot+'/en',
+			i18nFiles = grunt.file.expand({
+				cwd: localePath
+			}, '*.ini');
+
+		if (!grunt.file.isDir(outputDir)) {
+			grunt.file.mkdir(outputDir);
+		}
+
+		var i18nName, i18nPath, input, data, outputPath, output;
+		for (var i = 0; i < i18nFiles.length; i++) {
+			i18nName = i18nFiles[i];
+			i18nPath = localePath+'/'+i18nName;
+
+			input = grunt.file.read(i18nPath);
+			data = parseIni(input);
+
+			//Only keep keys
+			for (var key in data) {
+				data[key] = key;
+			}
+
+			outputPath = outputDir+'/'+i18nName;
+			output = formatIni(data);
+
+			grunt.file.write(outputPath, output);
+		}
+
+		//Then, 
+		var localesList = grunt.file.expand({
+			cwd: localesRoot,
+			filter: 'isDirectory'
+		}, '*');
+		for (i = 0; i < localesList.length; i++) {
+			var localeName = localesList[i];
+			localePath = localesRoot+'/'+localeName;
+
+			i18nFiles = grunt.file.expand({
+				cwd: localePath
+			}, '*.ini');
+
+			for (var j = 0; j < i18nFiles.length; j++) {
+				i18nName = i18nFiles[j];
+				i18nPath = localePath+'/'+i18nName;
+				outputPath = localesDest+'/'+localeName+'/'+i18nName;
+
+				input = grunt.file.read(i18nPath);
+				data = parseIni(input);
+				output = formatIni(data);
+
+				grunt.file.write(outputPath, output);
+			}
+		}
+	});
+
 	grunt.registerTask('convert-launcher', 'Convert launchers.', [
 		'convert:categories',
 		'convert:applications',
@@ -346,7 +445,7 @@ module.exports = function(grunt) {
 	]);
 
 	//TODO
-	grunt.registerTask('test', 'Run tests.', []);
+	grunt.registerTask('test', 'Run tests.', ['jshint:boot']);
 
 	//TODO: outdated
 	/*grunt.registerTask('quickbuild', 'Quickly re-build the web desktop.', [

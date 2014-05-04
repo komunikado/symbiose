@@ -9,6 +9,9 @@
 	var Operation = function () {
 		Webos.Observable.call(this);
 	};
+	/**
+	 * Operation's prototype.
+	 */
 	Operation.prototype = {
 		/**
 		 * True if this operation is started, false otherwise.
@@ -38,9 +41,8 @@
 			var that = this;
 
 			if (typeof event == 'object') {
-				var events = event;
-				for (var eventName in events) {
-					var fn = events[eventName];
+				for (var eventName in event) {
+					fn = event[eventName];
 					if (typeof fn != 'function') {
 						continue;
 					}
@@ -230,7 +232,9 @@
 		 * @since  1.0beta5
 		 */
 		always: function (callback) {
-			this.on('complete', callback);
+			this.on('complete', function (data) {
+				callback(data.result);
+			});
 			return this;
 		},
 		/**
@@ -240,7 +244,9 @@
 		 * @since  1.0beta5
 		 */
 		done: function (callback) {
-			this.on('success', callback);
+			this.on('success', function (data) {
+				callback(data.result);
+			});
 			return this;
 		},
 		/**
@@ -250,7 +256,9 @@
 		 * @since  1.0beta5
 		 */
 		fail: function (callback) {
-			this.on('error', callback);
+			this.on('error', function (data) {
+				callback(data.result);
+			});
 			return this;
 		},
 		/**
@@ -283,6 +291,19 @@
 	 */
 	Operation.create = function () {
 		return new Operation();
+	};
+
+	/**
+	 * Create a new completed operation.
+	 * @return {Webos.Operation} The new operation.
+	 * @since 1.0beta5
+	 */
+	Operation.createCompleted = function (result) {
+		var op = Operation.create();
+
+		op.setCompleted(result);
+
+		return op;
 	};
 
 
