@@ -1,1 +1,218 @@
 /* CSS */
+*
+{
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Alef','Roboto Condensed', sans-serif;
+}
+html, body
+{
+	height: 100%;
+}
+ul
+{
+	margin-top: 2px;
+	
+}
+#k-channel
+{
+	float:left;
+	width: 25%;
+	border-right: 2px solid grey;
+	min-height: 300px;
+	height: 100%;
+	-moz-box-sizing: border-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+#channel_public
+{
+	margin-top: 15px;
+}
+.boutton
+{
+	border: 1px solid black;
+	border-radius: 3px;
+	padding: 1px 3px 1px 3px; 
+	background-image: url(../image/mooning.png);
+	color: black;
+	margin-left: 2px;
+	margin-right: 2px;
+	margin-top: 5px;
+	font-family: 'Revalia', cursive;
+	cursor: pointer;
+	box-shadow: 0 1px black;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.boutton i
+{
+	color:black;
+	font-size: 15px;
+	float: right;
+}
+.boutton li
+{
+	color: black;
+	font-size: 15px;
+}
+.boutton:hover
+{
+	background-image:url(../image/tweed.png);
+	color: #C0C0C0;
+} 
+#k-channel h2
+{
+	font-size: 18px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-bottom: 10px;
+}
+#k-channel li
+{
+	font-size: 15px;
+	cursor: pointer;
+}
+#k-channel li ul li {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.l-channel
+{
+	font-size: 15px;
+	margin-left: 10px;
+	list-style-type: none;
+}
+.l-channel i
+{
+	font-size: 15px;
+	float: left;
+	margin-right: 4px;
+	padding-top: 2px;
+}
+.co
+{
+	color: green; 
+}
+.afk
+{
+	color:#800000;
+}
+.deco
+{
+	color: #C0C0C0;
+}
+#k-chat
+{
+	height: 100%;
+	max-height: 100%;
+}
+.chat
+{
+	float: left;
+	width: 25%;
+	height: 50%;
+	border-right: 1px solid #666666;
+	border-bottom: 1px solid #666666;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+	overflow: hidden;
+	background-image: url(../image/mooning.png);
+}
+.profil
+{
+	height: 25%;
+	width: 100%;
+	border-bottom: 2px solid #666666;
+	background-image: url(../image/tweed.png);
+	overflow: hidden;
+}
+.profil-information
+{
+	height: 100%;
+	width: 75%;
+	float: left;
+	margin-top: 7px;
+}
+.profil-information p
+{
+	margin-left: 15px;
+	font-size: 18px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #C0C0C0;
+	font-family: 'Revalia', cursive;
+}
+.profil-image
+{
+	float: left;
+	height: 80%;
+	width: 20%;
+	margin-top: 7px;
+}
+.conversation
+{
+	height:65%;
+	width: 100%;
+	background-image: url(../image/mooning.png);
+	overflow: auto;
+}
+textarea
+{
+	width: 100%;
+	height: 10%;
+	resize: none;
+	background-image: url(../image/mooning.png);
+	border-top: 2px solid #666666;
+	cursor: pointer;
+}
+.profil-image img
+{
+	max-width: 100%;
+	max-height: 100%;
+	border:1px solid black;
+}
+.conversation p
+{
+	clear: both;
+	float: left;
+	margin-left: 5px;
+}
+.default
+{
+	background-image: url(../image/mooning.png);
+}
+.default i
+{
+	margin-top: 18px;
+}
+
+.barre-icone
+{
+	margin-top: 5px;
+	height: 30%;
+	width: 100%;
+	margin-left: 10px;
+}
+.barre-icone img,i
+{
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: 18px;
+	color: #C0C0C0;
+	margin-left: 5px;
+}
+.barre-icone i
+{
+	cursor: pointer;
+}
+.ico:hover
+{
+	opacity: 0.8;
+}
