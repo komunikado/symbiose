@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shortcut>
+	<attribute name="title" value="Komunikado"/>
+	<attribute name="description" value="Chat with friends or dictators"/>
+	<attribute name="description" lang="fr_FR" value="Discuter avec des amis ou des dictateurs"/>
+	<attribute name="command" value="komunikado"/>
+	<attribute name="icon" value="apps/chat"/>
+	<attribute name="category" value="internet"/>
+	<attribute name="menu" value="applications"/>
+</shortcut>
