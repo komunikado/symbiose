@@ -2,12 +2,16 @@ Webos.require([
 	'/usr/lib/empathy/main.js'
 ], function() {
 	W.xtag.loadUI('/usr/share/templates/komunikado/main.html', function(windows) {
-		var $win = $(windows).filter(':eq(0)');
 
-		$win.window('open');
+var $win = $(windows).filter(':eq(0)');
 
-$('head').append('<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">');
-      
+$win.window('open');
+
+//$('body').append('<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">');
+
+$('head').append('<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">');
+
+ 
 $('#k-channel li .boutton').click(function () {
 	$(this).parent().children('ul').toggle();
 	$(this).children('i').toggleClass('fa-chevron-down').toggleClass('fa-chevron-up');
