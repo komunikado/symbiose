@@ -1,3 +1,5 @@
+$('head').append('<link href="//cdn.jsdelivr.net/fontawesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">');
+
 Webos.require([
 	'/usr/lib/empathy/main.js'
 ], function() {
@@ -5,8 +7,6 @@ Webos.require([
 		var $win = $(windows).filter(':eq(0)');
 
 		$win.window('open');
-
-$('head').append('<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">');
       
 $('#k-channel li .boutton').click(function () {
 	$(this).parent().children('ul').toggle();
