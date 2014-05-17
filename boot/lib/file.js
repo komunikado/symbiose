@@ -1544,19 +1544,33 @@ Webos.WebosFile.prototype = {
 		}, callback.error]);
 	},
 	readAsText: function(callback) {
-		var that = this;
-		callback = Webos.Callback.toCallback(callback);
+		var that = this, op;
+
+		if (this._readAsTextOperation) {
+			op = this._readAsTextOperation;
+			op.addCallbacks(callback);
+			return op;
+		}
+
+		op = Webos.Operation.create().addCallbacks(callback);
 
 		if (!this.checkAuthorization('read', callback)) {
-			return false;
+			op.setCompleted(false);
+			return op;
 		}
 		
 		if (typeof this._contents != 'undefined') {
-			callback.success(this._contents);
-			return;
+			op.setCompleted(this._contents);
+			return op;
 		}
 
-		return new Webos.ServerCall({
+		this._readAsTextOperation = op;
+
+		op.always(function () {
+			delete that._readAsTextOperation;
+		});
+
+		new Webos.ServerCall({
 			'class': 'FileController',
 			method: 'getContents',
 			arguments: {
@@ -1572,11 +1586,15 @@ Webos.WebosFile.prototype = {
 
 			var contents = response.getStandardChannel();
 			that._contents = contents;
-			callback.success(contents);
+			op.setCompleted(contents);
 
 			that.notify('updatecontents', { contents: contents });
 			Webos.File.notify('load', { file: that });
-		}, callback.error]);
+		}, function (resp) {
+			op.setCompleted(resp);
+		}]);
+
+		return op;
 	},
 	contents: function(callback) {
 		var that = this;
@@ -1717,7 +1735,7 @@ Webos.WebosFile.prototype = {
 			password: this.get('mountPointData').password
 		});
 
-		call.bind('success', function(data) {
+		call.one('success', function(data) {
 			var response = data.result;
 
 			that._contents = contents;
@@ -1732,7 +1750,7 @@ Webos.WebosFile.prototype = {
 	writeAsText: function(contents, callback) {
 		var that = this;
 		callback = Webos.Callback.toCallback(callback);
-		
+
 		if (this.get('is_dir')) {
 			this._unsupportedMethod(callback);
 			return;
@@ -1744,13 +1762,7 @@ Webos.WebosFile.prototype = {
 
 		var call = this._writeAsText(contents);
 
-		return call.load([function(response) {
-			that._contents = contents;
-
-			that.notify('updatecontents', { contents: contents });
-
-			that._updateData(response.getData());
-
+		return call.load([function (response) {
 			callback.success();
 		}, callback.error]);
 	},
