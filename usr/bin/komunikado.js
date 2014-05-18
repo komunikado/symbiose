@@ -4,6 +4,7 @@ Webos.require([
 	'/usr/lib/empathy/main.js'
 ], function() {
 	W.xtag.loadUI('/usr/share/templates/komunikado/main.html', function(windows) {
+var $win = $(windows);
 
 $win.window('open');
 
@@ -22,11 +23,24 @@ var getTime = function () {
 	return time
 }
 
+var contactList = [];
+
+
 conn.on({
     status: function (data) {
         console.log('connection status: '+data.type);
     },
     contact: function (contactData) {
+        if (contactData.username == conn.option('username')) {
+        	return;
+        }
+
+        if (contactList.indexOf(contactData.username) != -1){
+        	return;
+    	}
+
+        contactList.push(contactData.username)
+
         console.log('new contact', contactData.name, contactData.username, contactData.presence);
         console.log(contactData);
         if (contactData.presence == 'online'){
@@ -39,42 +53,49 @@ conn.on({
         	status_icon = 'fa fa-circle deco'
         }
 
-        $('#friends').children('ul').append('<li data-username="'+contactData.username+'">'+'<i class="'+status_icon+'">'+'</i>'+contactData.name+'<li>')
+        $('#friends').children('ul').append('<li data-username="'+contactData.username+'">'+'<i class="'+status_icon+'">'+'</i>'+(contactData.name || 'anonymous')+'<li>')
     },
     messagereceived: function (msg) {
         console.log('received a new message from '+msg.from+': '+msg.body);
-        $('.chat textarea').parent().children('.conversation').append('<p>'+getTime()+' '+msg.from+' '+msg.body+'</p>')
+        $('.chat[data-username="'+msg.from+'"] .conversation').append('<p>'+getTime()+' '+msg.from+' '+msg.body+'</p>')
     },
     callincoming: function (call) {
         console.log('a new call from '+call.from+' is incoming!');
+    },
+    error: function () {
+    	console.log(arguments);
     }
 });
       
 conn.connect();
 
-$('.chat textarea').keydown(function(event) {
+$('#k-chat').on('keydown', '.chat textarea', function(event) {
 	if ( event.which == 13 ) {
 		event.preventDefault();
 		var msg = $(this).val();
 		var to = $(this).parent().data('username');
 		if (msg != '') {
-			$(this).parent().children('.conversation').append('<p>'+getTime()+' '+conn.option('username')+' '+msg+'</p>');
+			$(this).parent().children('.conversation').append('<p>'+getTime()+' '+conn.option('username')+': '+msg+'</p>');
 			$(this).val('');
 			var height = $('.conversation')[0].scrollHeight;
 			$('.conversation').scrollTop(height);
+			console.log('message sent', to, msg);
 			conn.sendMessage({
 	   		 	to: to,
 	    		body: msg
 			});
 		}
 	}
+})
 
-$('#k-channel > ul > li > ul > li').click(function () {
-	$('#k-chat').append('<div class="chat" data-username="staline">' +
+$('#k-channel').on('click', 'ul > li > ul > li', function () {
+	var username = $(this).data('username'), fullname = $(this).text();
+
+	$('#k-chat').append('<div class="chat" data-username="'+username+'">' +
 				'<div class="profil">' +
 					'<div class="profil-information">' +
-						'<p title="Joseph Staline">Joseph Staline<p>' +
-						'<p>Russie</p>' +
+						'<p title="name">'+fullname+'<p>' +
+						// '<p>Russie</p>' +
 						'<div class="barre-icone">' +
 							'<i class="fa fa-phone ico"></i>' +
 							'<i class="fa fa-video-camera ico"></i>' +
@@ -83,7 +104,7 @@ $('#k-channel > ul > li > ul > li').click(function () {
 						'</div>' +
 					'</div>' +
 					'<div class="profil-image">' +
-						'<img src="image/staline.jpg"/>' +
+						'<img src="usr/share/images/komunikado/staline.jpg"/>' +
 					'</div>' +
 				'</div>' +
 				'<div class="conversation"></div>' +
@@ -93,7 +114,7 @@ $('#k-channel > ul > li > ul > li').click(function () {
 
 })
 
-})
+
 	});
 });
 
