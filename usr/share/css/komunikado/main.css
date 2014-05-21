@@ -3,7 +3,6 @@
 {
 	margin: 0px;
 	padding: 0px;
-	font-family: 'Alef','Roboto Condensed', sans-serif;
 }
 html, body
 {
@@ -13,6 +12,9 @@ ul
 {
 	margin-top: 2px;
 	
+}
+#k-chat, #k-channel {
+	font-family: 'Alef','Roboto Condensed', sans-serif;
 }
 #k-channel
 {
