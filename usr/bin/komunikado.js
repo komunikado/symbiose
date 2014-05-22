@@ -1,7 +1,7 @@
-// Ajout de la police d'icone.
+// Ajout de la police d'icône.
 $('head').append('<link href="//cdn.jsdelivr.net/fontawesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">');
 
-// Chargemement des bibliothèque PeerJS.
+// Chargemement des bibliothèques PeerJS.
 Webos.require([
 	'/usr/lib/empathy/main.js'
 ], function() {
@@ -11,7 +11,7 @@ var $win = $(windows);
 // Ouverture de la fenêtre
 $win.window('open');
 
-// Menu déroullant des contacts et changement de l'icone de la flèche.
+// Menu déroullant des contacts et changement de l'icône de la flèche.
 $('#k-channel li .boutton').click(function () {
 	$(this).parent().children('ul').toggle();
 	$(this).children('i').toggleClass('fa-chevron-down').toggleClass('fa-chevron-up');
@@ -48,8 +48,10 @@ conn.on({
         	return;
     	}
 
+    	// Ajout du contact venant de se connecter dans la liste de contact.
         contactList.push(contactData.username)
 
+        // Modification du voyant témoin de connexion si le contact est en ligne ou hors ligne.
         console.log('new contact', contactData.name, contactData.username, contactData.presence);
         console.log(contactData);
         if (contactData.presence == 'online'){
@@ -64,6 +66,7 @@ conn.on({
 
         $('#friends').children('ul').append('<li data-username="'+contactData.username+'">'+'<i class="'+status_icon+'">'+'</i>'+(contactData.name || 'anonymous')+'<li>')
     },
+    // Fonction qui reçoit les messages du correspondant et les affiches dans l'interface avec l'expéditeur et l'heure et ouvre une nouvelle fenêtre si elle n'est pas encore active à l'écran.
     messagereceived: function (msg) {
     	var conversationWin = $('.chat[data-username="'+msg.from+'"] .conversation');
 
@@ -73,6 +76,7 @@ conn.on({
     	} 
         $('.chat[data-username="'+msg.from+'"] .conversation').append('<p>'+getTime()+' '+msg.from+' '+msg.body+'</p>')
     },
+    // Témoin d'appelle dans la console.
     callincoming: function (call) {
         console.log('a new call from '+call.from+' is incoming!');
     },
@@ -80,9 +84,11 @@ conn.on({
     	console.log(arguments);
     }
 });
-      
+
+// Appelle de la fonction connexion du serveur PeerJS.
 conn.connect();
 
+// Envoi du message se trouvant dans la zone de texte lors de l'appuis sur la touche entrée.
 $('#k-chat').on('keydown', '.chat textarea', function(event) {
 	if ( event.which == 13 ) {
 		event.preventDefault();
@@ -102,6 +108,7 @@ $('#k-chat').on('keydown', '.chat textarea', function(event) {
 	}
 })
 
+// Fontion d'ouverture d'une nouvelle fenêtre.
 function newWindow(username, fullname){
 	$('#k-chat').append('<div class="chat" data-username="'+username+'">' +
 				'<div class="profil">' +
@@ -125,6 +132,7 @@ function newWindow(username, fullname){
 		)
 }
 
+// Ouverture d'une nouvelle fenêtre lorsqu'on clique sur le nom d'un contact dans la barre latéral gauche.
 $('#k-channel').on('click', 'ul > li > ul > li', function () {
 	var username = $(this).data('username'), fullname = $(this).text();
 
@@ -151,6 +159,7 @@ $('#k-channel').on('click', 'ul > li > ul > li', function () {
 
 })
 
+// Appelle le contact lorsqu'on clique sur l'icône téléphone.
 $('#k-chat').on('click', '.fa-phone', function(){
 	var username = $(this).parents('.chat').data('username');
 	conn.call({
