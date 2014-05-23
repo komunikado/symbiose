@@ -3,7 +3,6 @@
 {
 	margin: 0px;
 	padding: 0px;
-	font-family: 'Alef','Roboto Condensed', sans-serif;
 }
 html, body
 {
@@ -25,6 +24,11 @@ ul
 	overflow: auto;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	-moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 #channel_public
 {
@@ -46,6 +50,11 @@ ul
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	-moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 .boutton i
 {
@@ -69,6 +78,12 @@ ul
 	overflow: hidden;
 	text-overflow: ellipsis;
 	margin-bottom: 10px;
+	font-family: 'Revalia', cursive;
+	-moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 #k-channel li
 {
@@ -133,6 +148,11 @@ ul
 	border-bottom: 2px solid #666666;
 	background-image: url(usr/share/images/komunikado/tweed.png);
 	overflow: hidden;
+	-moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 .profil-information
 {
@@ -182,9 +202,12 @@ textarea
 }
 .conversation p
 {
+	width: 95%;
 	clear: both;
 	float: left;
-	margin-left: 5px;
+	margin-left: 3px;
+	word-wrap: break-word;
+	overflow:hidden;
 }
 .default
 {
