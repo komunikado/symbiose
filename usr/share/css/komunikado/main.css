@@ -13,6 +13,9 @@ ul
 	margin-top: 2px;
 	
 }
+#k-chat, #k-channel {
+	font-family: 'Alef','Roboto Condensed', sans-serif;
+}
 #k-channel
 {
 	float:left;
