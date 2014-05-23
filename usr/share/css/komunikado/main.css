@@ -28,10 +28,10 @@ ul
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	-moz-user-select: -moz-none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -o-user-select: none;
-    user-select: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
 #channel_public
 {
@@ -54,10 +54,10 @@ ul
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	-moz-user-select: -moz-none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -o-user-select: none;
-    user-select: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-o-user-select: none;
+    	user-select: none;
 }
 .boutton i
 {
@@ -83,10 +83,10 @@ ul
 	margin-bottom: 10px;
 	font-family: 'Revalia', cursive;
 	-moz-user-select: -moz-none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -o-user-select: none;
-    user-select: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
 #k-channel li
 {
@@ -152,10 +152,10 @@ ul
 	background-image: url(usr/share/images/komunikado/tweed.png);
 	overflow: hidden;
 	-moz-user-select: -moz-none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -o-user-select: none;
-    user-select: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-o-user-select: none;
+	user-select: none;
 }
 .profil-information
 {
