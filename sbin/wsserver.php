@@ -39,7 +39,7 @@ $sessionHandler = $sessionProvider->handler();
 
 //Servers
 $apiServer = new RatchetSessionProvider(new ApiWebSocketServer, $sessionHandler);
-$peerServer = new PeerServer($hostname, $port);
+$peerServer = new PeerServer($hostnames[0], $port);
 $decoratedPeerServer = new RatchetSessionProvider($peerServer, $sessionHandler);
 $peerHttpServer = new PeerHttpServer($peerServer); //HTTP servers don't support SessionProvider
 
