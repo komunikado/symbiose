@@ -3278,14 +3278,14 @@ Webos.require([
 
 			return op;
 		},
-		_getUserMedia: function () {
+		_getUserMedia: function (opts) {
 			var op = Webos.Operation.create();
 
 			// Compatibility shim
 			navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
 			// Get audio/video stream
-			navigator.getUserMedia({ audio: true, video: true }, function (stream) {
+			navigator.getUserMedia(opts || { audio: true, video: true }, function (stream) {
 				op.setCompleted(stream);
 			}, function(err) {
 				op.setCompleted(false);
@@ -3297,7 +3297,7 @@ Webos.require([
 			var that = this, peer = this._peer;
 			var op = Webos.Operation.create();
 
-			this._getUserMedia().on({
+			this._getUserMedia(callMetadata.userMedia).on({
 				success: function (data) {
 					var stream = data.result,
 						call = peer.call(callMetadata.to, stream);

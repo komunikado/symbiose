@@ -78,7 +78,47 @@ conn.on({
     },
     // Témoin d'appelle dans la console.
     callincoming: function (call) {
+        console.log(call);
         console.log('a new call from '+call.from+' is incoming!');
+
+		$.webos.window.confirm({
+			title: 'Komunikado avec '+call.remote,
+			label: '<em>'+call.remote+'</em> vous appelle. Souhaitez-vous r&eacute;pondre ?',
+			confirmLabel: 'R&eacute;pondre',
+			cancelLabel: 'Raccrocher',
+			confirm: function () {
+				conn.answerCall(call.callId);
+			},
+			cancel: function () {
+				conn.endCall(call.callId);
+			}
+		}).window('open');
+    },
+    callstart: function (call) {
+    	console.log('call', call);
+    	var $callWin = $.w.window({
+    		title: 'Komunikado avec '+call.remote,
+    		width: 680,
+    		parentWindow: $win,
+    		closeable: false,
+    		dialog: true
+    	});
+
+    	var $winContent = $callWin.window('content');
+    	$winContent.css({
+    		'text-align': 'center'
+    	});
+
+    	var $audio = $('<video></video>', { src: URL.createObjectURL(call.remoteStream) }).appendTo($winContent);
+
+    	$.w.button('<i class="fa fa-phone" style="color: red; font-size: 7em;"></i>').click(function () {
+    		$callWin.window('close');
+    		conn.endCall(call.callId);
+    	}).appendTo($winContent);
+
+    	$callWin.window('open');
+
+    	$audio[0].play();
     },
     error: function () {
     	console.log(arguments);
@@ -161,6 +201,14 @@ $('#k-channel').on('click', 'ul > li > ul > li', function () {
 
 // Appelle le contact lorsqu'on clique sur l'icône téléphone.
 $('#k-chat').on('click', '.fa-phone', function(){
+	var username = $(this).parents('.chat').data('username');
+	conn.call({
+		to: username,
+		userMedia: { audio: true, video: false }
+	})
+})
+
+$('#k-chat').on('click', '.fa-video-camera', function(){
 	var username = $(this).parents('.chat').data('username');
 	conn.call({
 		to: username
