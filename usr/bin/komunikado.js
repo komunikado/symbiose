@@ -74,7 +74,7 @@ conn.on({
     		var fullname = $('#k-channel li[data-username="'+msg.from+'"]').text()
     		newWindow(msg.from, fullname)
     	} 
-        $('.chat[data-username="'+msg.from+'"] .conversation').append('<p>'+getTime()+' '+msg.from+' '+msg.body+'</p>')
+        $('.chat[data-username="'+msg.from+'"] .conversation').append('<p><span class="msg-metadata">'+getTime()+' '+msg.from+':</span> '+msg.body+'</p>')
     },
     // Témoin d'appelle dans la console.
     callincoming: function (call) {
@@ -135,7 +135,7 @@ $('#k-chat').on('keydown', '.chat textarea', function(event) {
 		var msg = $(this).val();
 		var to = $(this).parent().data('username');
 		if (msg != '') {
-			$(this).parent().children('.conversation').append('<p>'+getTime()+' '+conn.option('username')+': '+msg+'</p>');
+			$(this).parent().children('.conversation').append('<p><span class="msg-metadata">'+getTime()+' '+conn.option('username')+':</span> '+msg+'</p>');
 			$(this).val('');
 			var height = $('.conversation')[0].scrollHeight;
 			$('.conversation').scrollTop(height);
